@@ -4,6 +4,8 @@
 
 @section('content')
 
+<h2 align="center">Data Tanah</h2>
+
 <div style="margin-bottom: 15px;">
     <a href="{{ route('tanah.create') }}">Tambah</a>
 </div>

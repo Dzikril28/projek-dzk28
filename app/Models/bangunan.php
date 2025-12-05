@@ -25,4 +25,12 @@ class Bangunan extends Model
     function ruangan() {
         return $this->hasMany(Ruangan::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($bangunan) {
+            $bangunan->ruangan()->delete();
+        });
+    }
 }

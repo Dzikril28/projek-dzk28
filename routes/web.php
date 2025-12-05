@@ -6,6 +6,12 @@ use App\Http\Controllers\BangunanController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KategoriController;
+use App\Models\User;
+use App\Models\Tanah;
+use App\Models\Bangunan;
+use App\Models\Ruangan;
+use App\Models\Barang;
+use App\Models\Kategori;
 use Illuminate\Support\Facades\Route;
 
 // Arahkan root ke halaman login
@@ -38,12 +44,22 @@ Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', function () {
 
-        $totalAssets = \App\Models\Barang::count();
+        $totalAssets = Barang::count();
 
-        $totalTanah     = \App\Models\Tanah::count();
-        $totalBangunan  = \App\Models\Bangunan::count();
-        $totalRuangan   = \App\Models\Ruangan::count();
+        $totalUsers     = User::count();
+        $totalTanah     = Tanah::count();
+        $totalBangunan  = Bangunan::count();
+        $totalRuangan   = Ruangan::count();
+        $totalKategori  = Kategori::count();
         $totalBarang    = $totalAssets;
+
+        // Get all data for tables
+        $users = User::all();
+        $tanah = Tanah::all();
+        $bangunan = Bangunan::with('tanah')->get();
+        $ruangan = Ruangan::with('bangunan')->get();
+        $kategori = Kategori::with('barang')->get();
+        $barang = Barang::with('kategori', 'ruangan')->get();
 
         $maintenanceKeywords = ['maintenance', 'perbaikan', 'service', 'repair'];
         $brokenKeywords      = ['rusak', 'broken', 'damage', 'damaged'];
@@ -52,28 +68,28 @@ Route::middleware('auth')->group(function () {
         $brokenAssets = 0;
 
         foreach ($maintenanceKeywords as $kw) {
-            $maintenanceAssets += \App\Models\Barang::whereRaw('LOWER(kondisi) like ?', ["%{$kw}%"])->count();
+            $maintenanceAssets += Barang::whereRaw('LOWER(kondisi) like ?', ["%{$kw}%"])->count();
         }
 
         foreach ($brokenKeywords as $kw) {
-            $brokenAssets += \App\Models\Barang::whereRaw('LOWER(kondisi) like ?', ["%{$kw}%"])->count();
+            $brokenAssets += Barang::whereRaw('LOWER(kondisi) like ?', ["%{$kw}%"])->count();
         }
 
         if ($maintenanceAssets + $brokenAssets > $totalAssets) {
-            $allIds = \App\Models\Barang::where(function ($q) use ($maintenanceKeywords, $brokenKeywords) {
+            $allIds = Barang::where(function ($q) use ($maintenanceKeywords, $brokenKeywords) {
                 foreach (array_merge($maintenanceKeywords, $brokenKeywords) as $kw) {
                     $q->orWhereRaw('LOWER(kondisi) like ?', ["%{$kw}%"]);
                 }
             })->pluck('id')->unique();
 
-            $maintenanceAssets = \App\Models\Barang::whereIn('id', $allIds)
+            $maintenanceAssets = Barang::whereIn('id', $allIds)
                 ->where(function ($q) use ($maintenanceKeywords) {
                     foreach ($maintenanceKeywords as $kw) {
                         $q->orWhereRaw('LOWER(kondisi) like ?', ["%{$kw}%"]);
                     }
                 })->count();
 
-            $brokenAssets = \App\Models\Barang::whereIn('id', $allIds)
+            $brokenAssets = Barang::whereIn('id', $allIds)
                 ->where(function ($q) use ($brokenKeywords) {
                     foreach ($brokenKeywords as $kw) {
                         $q->orWhereRaw('LOWER(kondisi) like ?', ["%{$kw}%"]);
@@ -85,7 +101,8 @@ Route::middleware('auth')->group(function () {
 
         return view('dashboard', compact(
             'totalAssets', 'activeAssets', 'maintenanceAssets', 'brokenAssets',
-            'totalTanah', 'totalBangunan', 'totalRuangan', 'totalBarang'
+            'totalUsers', 'totalTanah', 'totalBangunan', 'totalRuangan', 'totalKategori', 'totalBarang',
+            'users', 'tanah', 'bangunan', 'ruangan', 'kategori', 'barang'
         ));
     })->name('dashboard');
 

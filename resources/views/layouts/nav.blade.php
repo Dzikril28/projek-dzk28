@@ -45,18 +45,18 @@
     </style>
 
     <div class="nav-links">
-        {{-- @guest --}}
+        @guest
             <a href="{{ route('login') }}">Login</a>   
-            <a href="{{ route('register') }}">Register</a>   
-        {{-- @endguest
-        @auth --}}
+            <a href="{{ route('register') }}">Register</a>
+        @else
+            <a href="{{ route('dashboard') }}">Dashboard</a>
             <a href="{{ route('users.index') }}">Users</a>
             <a href="{{ route('tanah.index') }}">Tanah</a>
             <a href="{{ route('bangunan.index') }}">Bangunan</a>
             <a href="{{ route('ruangan.index') }}">Ruangan</a>
             <a href="{{ route('kategori.index') }}">Kategori</a>
             <a href="{{ route('barang.index') }}">Barang</a>
-        {{-- @endauth --}}
+        @endguest
     </div>
 
     <form action="{{ route('logout') }}" method="POST" style="margin: 0;">

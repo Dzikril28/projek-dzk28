@@ -21,4 +21,12 @@ class Tanah extends Model
     function bangunan() {
         return $this->hasMany(Bangunan::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($tanah) {
+            $tanah->bangunan()->delete();
+        });
+    }
 }

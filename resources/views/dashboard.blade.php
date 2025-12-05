@@ -100,8 +100,14 @@
             </div>
         </div>
 
-        <!-- Quick Stats -->
-        <div class="col-md-3 mb-4">
+<div class="col-md-3 mb-4">
+    <div class="stat-card">
+        <h5>Total Users</h5>
+        <h2>{{ $totalUsers ?? 0 }}</h2>
+    </div>
+</div>
+
+<div class="col-md-3 mb-4">
     <div class="stat-card">
         <h5>Total Tanah</h5>
         <h2>{{ $totalTanah ?? 0 }}</h2>
@@ -124,12 +130,261 @@
 
 <div class="col-md-3 mb-4">
     <div class="stat-card">
+        <h5>Total Kategori</h5>
+        <h2>{{ $totalKategori ?? 0 }}</h2>
+    </div>
+</div>
+
+<div class="col-md-3 mb-4">
+    <div class="stat-card">
         <h5>Total Barang</h5>
         <h2>{{ $totalBarang ?? 0 }}</h2>
     </div>
-</div>
-        <!-- Recent Activity -->
-        <div class="col-12">
+        <!-- Users Data -->
+        <div class="col-12 mb-4">
+            <div class="card activity-card">
+                <div class="card-header">
+                    <h5>Data Users</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table activity-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Terdaftar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($users ?? [] as $user)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td><span style="background: #198754; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">{{ $user->role }}</span></td>
+                                        <td>{{ $user->created_at->format('d/m/Y') }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; color: #999; padding: 20px;">Tidak ada data users</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tanah Data -->
+        <div class="col-12 mb-4">
+            <div class="card activity-card">
+                <div class="card-header">
+                    <h5>Data Tanah</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table activity-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Tanah</th>
+                                    <th>Kode</th>
+                                    <th>Luas</th>
+                                    <th>Ditambah</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($tanah ?? [] as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->nama_tanah ?? '-' }}</td>
+                                        <td>{{ $item->kode_tanah ?? '-' }}</td>
+                                        <td>{{ $item->luas ?? '-' }} m²</td>
+                                        <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; color: #999; padding: 20px;">Tidak ada data tanah</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bangunan Data -->
+        <div class="col-12 mb-4">
+            <div class="card activity-card">
+                <div class="card-header">
+                    <h5>Data Bangunan</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table activity-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Bangunan</th>
+                                    <th>Kode</th>
+                                    <th>Tanah</th>
+                                    <th>Ditambah</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($bangunan ?? [] as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->nama_bangunan ?? '-' }}</td>
+                                        <td>{{ $item->kode_bangunan ?? '-' }}</td>
+                                        <td>{{ $item->tanah->nama_tanah ?? '-' }}</td>
+                                        <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; color: #999; padding: 20px;">Tidak ada data bangunan</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ruangan Data -->
+        <div class="col-12 mb-4">
+            <div class="card activity-card">
+                <div class="card-header">
+                    <h5>Data Ruangan</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table activity-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Ruangan</th>
+                                    <th>Kode</th>
+                                    <th>Bangunan</th>
+                                    <th>Ditambah</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($ruangan ?? [] as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->nama_ruangan ?? '-' }}</td>
+                                        <td>{{ $item->kode_ruangan ?? '-' }}</td>
+                                        <td>{{ $item->bangunan->nama_bangunan ?? '-' }}</td>
+                                        <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; color: #999; padding: 20px;">Tidak ada data ruangan</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kategori Data -->
+        <div class="col-12 mb-4">
+            <div class="card activity-card">
+                <div class="card-header">
+                    <h5>Data Kategori</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table activity-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Kategori</th>
+                                    <th>Jumlah Barang</th>
+                                    <th>Ditambah</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($kategori ?? [] as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->nama_kategori ?? '-' }}</td>
+                                        <td><span style="background: #157347; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">{{ $item->barang->count() ?? 0 }}</span></td>
+                                        <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; color: #999; padding: 20px;">Tidak ada data kategori</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barang Data -->
+        <div class="col-12 mb-4">
+            <div class="card activity-card">
+                <div class="card-header">
+                    <h5>Data Barang</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table activity-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Barang</th>
+                                    <th>Kode Inventaris</th>
+                                    <th>Kategori</th>
+                                    <th>Ruangan</th>
+                                    <th>Kondisi</th>
+                                    <th>Ditambah</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($barang ?? [] as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->nama_barang ?? '-' }}</td>
+                                        <td>{{ $item->kode_inventaris ?? '-' }}</td>
+                                        <td>{{ $item->kategori->nama_kategori ?? '-' }}</td>
+                                        <td>{{ $item->ruangan->nama_ruangan ?? '-' }}</td>
+                                        <td>
+                                            @if($item->kondisi == 'Baik')
+                                                <span style="background: #198754; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">{{ $item->kondisi }}</span>
+                                            @elseif($item->kondisi == 'Rusak Berat')
+                                                <span style="background: #dc3545; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">{{ $item->kondisi }}</span>
+                                            @else
+                                                <span style="background: #ffc107; color: #333; padding: 4px 8px; border-radius: 4px; font-size: 12px;">{{ $item->kondisi }}</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" style="text-align: center; color: #999; padding: 20px;">Tidak ada data barang</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
             <div class="card activity-card">
                 <div class="card-header">
                     <h5>Aktivitas Terakhir</h5>

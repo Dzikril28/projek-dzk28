@@ -1,5 +1,11 @@
 # Sistem Informasi Manajemen Aset
 
+
+
+https://github.com/user-attachments/assets/3e7d8c6c-e570-4c24-8198-249204a18410
+
+
+
 Aplikasi web untuk mengelola dan mencatat data aset organisasi termasuk tanah, bangunan, ruangan, dan barang-barang.
 
 ## Fitur Utama

@@ -3,45 +3,45 @@
 @section('title', 'Data Ruangan')
 
 @section('content')
-<div class="card m-4">
-    <div class="card-header">
-        <h2 class="card-title text-center">Data Ruangan</h2>
-    </div>
-    <div class="card-body row">
-        <div class="col my-2">
-            <a href="{{ route('ruangan.create') }}" class="btn btn-primary">Tambah</a>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead class="text-center">
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nama Ruangan</th>
-                        <th scope="col">Kode Ruangan</th>
-                        <th scope="col">Bangunan ID</th>
-                        <th scope="col">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($items as $item)
-                    <tr>
-                        <th scope="row" class="text-center">{{ $loop->iteration }}</th>
-                        <td align="center">{{ $item->nama_ruangan }}</td>
-                        <td align="center">{{ $item->kode_ruangan }}</td>
-                        <td align="center">{{ $item->bangunan_id }}</td>
-                        <td align="center" class="d-flex gap-2 justify-content-center">
-                            <a href="{{ route('ruangan.edit', $item->id) }}" class="btn btn-success">Edit</a>
-                            <form action="{{ route('ruangan.destroy', $item->id) }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
+
+<h2 align="center">Data Ruangan</h2>
+
+<div style="margin-bottom: 15px;">
+    <a href="{{ route('ruangan.create') }}">Tambah</a>
 </div>
+
+<table>
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Nama Ruangan</th>
+            <th>Kode Ruangan</th>
+            <th>Bangunan ID</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach ($items as $item)
+        <tr>
+            <td align="center">{{ $loop->iteration }}</td>
+            <td align="center">{{ $item->nama_ruangan }}</td>
+            <td align="center">{{ $item->kode_ruangan }}</td>
+            <td align="center">{{ $item->bangunan_id }}</td>
+            <td align="center">
+                <a href="{{ route('ruangan.edit', $item->id) }}">Edit</a>
+
+                <form action="{{ route('ruangan.destroy', $item->id) }}"
+                      method="POST"
+                      style="display:inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Hapus</button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
 @endsection

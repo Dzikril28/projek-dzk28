@@ -1,43 +1,43 @@
 @extends('layouts.app')
 
-@section('title', 'Data Ruangan')
+@section('title', 'Data Kategori')
 
 @section('content')
-<div class="card m-4">
-    <div class="card-header">
-        <h2 class="card-title text-center">Data Ruangan</h2>
-    </div>
-    <div class="card-body row">
-        <div class="col my-2">
-            <a href="{{ route('kategori.create') }}" class="btn btn-primary">Tambah</a>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead class="text-center">
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nama Kategori</th>
-                        <th scope="col">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($items as $item)
-                    <tr>
-                        <th scope="row" class="text-center">{{ $loop->iteration }}</th>
-                        <td align="center">{{ $item->nama_kategori }}</td>
-                        <td align="center" class="d-flex gap-2 justify-content-center">
-                            <a href="{{ route('kategori.edit', $item->id) }}" class="btn btn-success">Edit</a>
-                            <form action="{{ route('kategori.destroy', $item->id) }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
+
+<h2 align="center">Data Kategori</h2>
+
+<div style="margin-bottom: 15px;">
+    <a href="{{ route('kategori.create') }}">Tambah</a>
 </div>
+
+<table>
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Nama Kategori</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach ($items as $item)
+        <tr>
+            <td align="center">{{ $loop->iteration }}</td>
+            <td align="center">{{ $item->nama_kategori }}</td>
+            <td align="center">
+                <a href="{{ route('kategori.edit', $item->id) }}">Edit</a>
+
+                <form action="{{ route('kategori.destroy', $item->id) }}"
+                      method="POST"
+                      style="display:inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Hapus</button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
 @endsection
